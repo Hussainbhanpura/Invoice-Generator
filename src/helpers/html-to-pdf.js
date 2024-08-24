@@ -32,7 +32,7 @@ async function htmlToPdf(html, options = defaultOptions) {
   } finally {
     if (browser) {
       try {
-        await browser.close();
+        // await browser.close();
       } catch (closeError) {
         console.error("Error closing browser:", closeError);
       }

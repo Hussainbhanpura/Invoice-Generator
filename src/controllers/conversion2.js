@@ -94,7 +94,7 @@ router.post("/", async (req, res) => {
             </tr>
             `;
     }
-    let totalAmount = amount
+    let totalAmount = (Array.isArray(amount) ? amount : [amount])
       .reduce((acc, curr) => acc + parseFloat(curr), 0)
       .toFixed(2);
     let [integerPart, decimalPart] = parseFloat(totalAmount)
@@ -441,7 +441,7 @@ router.post("/", async (req, res) => {
                  colspan="1"
                  style="border: 1px solid black; text-align: center; padding: 3px"
                >
-                 ${quantity.reduce((acc, curr) => acc + parseFloat(curr), 0)}
+                ${(Array.isArray(quantity) ? quantity : [quantity]).reduce((acc, curr) => acc + parseFloat(curr), 0)}
                </td>
                <td
                  style="

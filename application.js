@@ -13,7 +13,7 @@ class Application {
 
     // Use the already defined __dirname and __filename
     app.get("/", (req, res) => {
-      const filePath = path.join(__dirname, "../invoice/index.html");
+      const filePath = path.join(__dirname, "./invoice/index.html");
       res.sendFile(filePath);
     });
 
