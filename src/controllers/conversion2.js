@@ -1,21 +1,31 @@
-const express = require('express');
-const htmlToPdf = require( '../helpers/html-to-pdf.js');
-const pkg = require('number-to-words');
-const {toWords} = pkg
+const express = require("express");
+const htmlToPdf = require("../helpers/html-to-pdf.js");
+const pkg = require("number-to-words");
+const { toWords } = pkg;
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
-    try {
-        console.log(`Request body : `,req.body);
-        const { description,color,packaging, hsnCode, quantity, rate, amount,exchangeRate } = req.body;
+router.post("/", async (req, res) => {
+  try {
+    console.log(`Request body : `, req.body);
+    const {
+      description,
+      color,
+      packaging,
+      hsnCode,
+      quantity,
+      rate,
+      amount,
+      exchangeRate,
+    } = req.body;
     console.log(exchangeRate);
-        if (!description || !quantity || !rate) {
-            res.status(400).send('Required fields are missing');                return;
-        }
-        let tableRows = '';
-        for (let i = 0; i < description.length; i++) {
-            tableRows += `
+    if (!description || !quantity || !rate) {
+      res.status(400).send("Required fields are missing");
+      return;
+    }
+    let tableRows = "";
+    for (let i = 0; i < description.length; i++) {
+      tableRows += `
             <tr>
               <td
                 style="
@@ -25,7 +35,7 @@ router.post('/', async (req, res) => {
                 "
                 rowspan="2"
               >
-                ${i+1}
+                ${i + 1}
               </td>
               <td style="border: 1px solid black; text-align: center" colSpan="4">
                 ${description[i]}
@@ -74,23 +84,33 @@ router.post('/', async (req, res) => {
             <tr>
               <td style="border: 1px solid black" colspan="2">
                     MADE IN INDIA(WITH STANDARD ACCESSORIES)
-                 <td style="border: 1px solid black;text-align : center" colspan="1"> ${color[i]} </td>
-                 <td style="border: 1px solid black; text-align : center" colspan="1">  ${packaging[i]}
+                 <td style="border: 1px solid black;text-align : center" colspan="1"> ${
+                   color[i]
+                 } </td>
+                 <td style="border: 1px solid black; text-align : center" colspan="1">  ${
+                   packaging[i]
+                 }
               </td>
             </tr>
             `;
-        }
-        let totalAmount = amount.reduce((acc, curr) => acc + parseFloat(curr), 0).toFixed(2)
-        let [integerPart, decimalPart] = parseFloat(totalAmount).toFixed(2).split('.');
-        let words = toWords(parseInt(integerPart, 10));
-        if (decimalPart && parseInt(decimalPart, 10) !== 0) {
-        words += ' and ' + toWords(parseInt(decimalPart, 10)) + ' fils';
     }
-    const taxAmount = (totalAmount * exchangeRate * 0.18).toFixed(2)
-    let [integer2Part, decimal2Part] = parseFloat(taxAmount).toFixed(2).split('.');
+    let totalAmount = amount
+      .reduce((acc, curr) => acc + parseFloat(curr), 0)
+      .toFixed(2);
+    let [integerPart, decimalPart] = parseFloat(totalAmount)
+      .toFixed(2)
+      .split(".");
+    let words = toWords(parseInt(integerPart, 10));
+    if (decimalPart && parseInt(decimalPart, 10) !== 0) {
+      words += " and " + toWords(parseInt(decimalPart, 10)) + " fils";
+    }
+    const taxAmount = (totalAmount * exchangeRate * 0.18).toFixed(2);
+    let [integer2Part, decimal2Part] = parseFloat(taxAmount)
+      .toFixed(2)
+      .split(".");
     let taxWords = toWords(parseInt(integer2Part, 10));
-    if(decimalPart && parseInt(decimal2Part, 10) !==0){
-    taxWords += ' and ' + toWords(parseInt(decimal2Part, 10)) + ' paisa';
+    if (decimalPart && parseInt(decimal2Part, 10) !== 0) {
+      taxWords += " and " + toWords(parseInt(decimal2Part, 10)) + " paisa";
     }
     const html = `<!DOCTYPE html>
  <html lang="en">
@@ -455,7 +475,10 @@ router.post('/', async (req, res) => {
                 TAX <br/> ${(totalAmount * exchangeRate * 0.18).toFixed(2)}
               </td>
               <td colSpan="2" style="border: 1px solid black; text-align : center">
-                TOTAL AMOUNT <br /> ${((totalAmount * exchangeRate) + (totalAmount * exchangeRate * 0.18)).toFixed(2)}
+                TOTAL AMOUNT <br /> ${(
+                  totalAmount * exchangeRate +
+                  totalAmount * exchangeRate * 0.18
+                ).toFixed(2)}
               </td>
             </tr>
             <tr>
@@ -534,15 +557,16 @@ router.post('/', async (req, res) => {
        </div>
      </div>
    </body>
- </html>`
+ </html>`;
 
-        const pdfBuffer = await htmlToPdf(html);
-        res.contentType('application/pdf');
-        res.end(pdfBuffer, 'binary');
-    } catch (error) {
-        console.error('Error generating PDF:', error);
-        res.status(500).send('Error generating PDF');
-    }
+    const pdfBuffer = await htmlToPdf(html);
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `attachment; filename=invoice.pdf`);
+    res.send(pdfBuffer);
+  } catch (error) {
+    console.error("Error generating PDF:", error);
+    res.status(500).send("Error generating PDF");
+  }
 });
 
 module.exports = router;
