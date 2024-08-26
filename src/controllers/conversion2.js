@@ -8,6 +8,7 @@ router.post("/", async (req, res) => {
   try {
     console.log(`Request body : `, req.body);
     const {
+      currency,
       invoiceNo,
       buyerPO,
       date,
@@ -24,6 +25,12 @@ router.post("/", async (req, res) => {
     if (!description || !quantity || !rate) {
       res.status(400).send("Required fields are missing");
       return;
+    }
+    if(currency === "UAE Dirham"){
+      sym = "AED"
+    }
+    else{
+      sym = "USD"
     }
     let tableRows = "";
     for (let i = 0; i < description.length; i++) {
@@ -415,7 +422,7 @@ router.post("/", async (req, res) => {
                    padding: 3px;
                  "
                >
-                 Rate <br/> AED
+                 Rate <br/> ${sym}
                </th>
                <th
                  style="
@@ -424,7 +431,7 @@ router.post("/", async (req, res) => {
                    padding: 3px;
                  "
                >
-                 Amount <br/> AED
+                 Amount <br/> ${sym}
                </th>
              </tr>
            </thead>
@@ -456,7 +463,7 @@ router.post("/", async (req, res) => {
              </tr>
              <tr style="border: 1px solid black; text-align : center;">
                 <td colSpan="8">
-                    Total: UAE Dirham - ${words.toUpperCase()} ONLY
+                    Total: ${currency} - ${words.toUpperCase()} ONLY
                 </td>
              </tr>
              <tr>
@@ -483,7 +490,7 @@ router.post("/", async (req, res) => {
             </tr>
             <tr>
               <td colspan="4" style="text-align: right; border : 0px solid">
-                EXCHANGE RATE 1 AED =
+                EXCHANGE RATE 1 ${sym} =
               </td>
               <td colspan="8" style="text-align: left; border: 0px solid black; margin-left : 10px">
                 ${exchangeRate}

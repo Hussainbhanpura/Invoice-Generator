@@ -94,6 +94,18 @@
         <div class="form-group mt-3">
           <div class="input-group">
             <span class="input-group-text">Exchange Rate</span>
+            <div class="col-3">
+              <select
+                style="min-width: fit-content !important"
+                aria-label="currency"
+                class="form-control form-control-sm"
+                id="currency"
+                required
+              >
+                <option value="UAE Dirham">UAE Dirham</option>
+                <option value="US Dollar">US Dollar</option>
+              </select>
+            </div>
             <div class="col-2">
               <!-- Adjust the "col-3" to make it smaller or larger -->
               <input
@@ -229,6 +241,10 @@
             data[key].push(value);
           });
 
+          const currency = document.getElementById("currency").value;
+          if (currency) {
+            data.currency = currency;
+          }
           // Add exchange rate to the data object
           const exchangeRate = document.getElementById("exchangeRate").value;
           if (exchangeRate) {
