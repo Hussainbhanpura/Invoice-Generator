@@ -16,6 +16,7 @@
     "express": "^4.19.2",
     "fs": "^0.0.1-security",
     "node": "^22.7.0",
+    "num-words": "^1.2.3",
     "number-to-words": "^1.2.4",
     "path": "^0.12.7",
     "puppeteer": "^22.15.0"
