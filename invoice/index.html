@@ -24,6 +24,52 @@
       <h1 class="mb-4">Invoice Item Entry</h1>
       <form id="invoiceForm">
         <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Invoice No</th>
+                <th>Buyer's PO</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input
+                    type="text"
+                    style="min-width: 80px !important"
+                    aria-label="invoiceNo"
+                    class="form-control form-control-sm"
+                    id="invoiceNo"
+                    required
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    style="min-width: 80px !important"
+                    aria-label="buyerPO"
+                    class="form-control form-control-sm"
+                    id="buyerPO"
+                    required
+                  />
+                </td>
+                <td>
+                  <input
+                    type="date"
+                    style="min-width: 80px !important"
+                    aria-label="date"
+                    class="form-control form-control-sm"
+                    id="date"
+                    required
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-responsive">
           <table class="table table-bordered" id="itemsTable">
             <thead>
               <tr>
@@ -189,6 +235,30 @@
             data.exchangeRate = exchangeRate;
           } else {
             alert("Please enter the exchange rate.");
+            return;
+          }
+
+          const invoiceNo = document.getElementById("invoiceNo").value;
+          if (invoiceNo) {
+            data.invoiceNo = invoiceNo;
+          } else {
+            alert("Please enter the invoiceNo number.");
+            return;
+          }
+
+          const buyerPO = document.getElementById("buyerPO").value;
+          if (buyerPO) {
+            data.buyerPO = buyerPO;
+          } else {
+            alert("Please enter the buyerPO number.");
+            return;
+          }
+
+          const date = document.getElementById("date").value;
+          if (date) {
+            data.date = date;
+          } else {
+            alert("Please enter the date");
             return;
           }
 

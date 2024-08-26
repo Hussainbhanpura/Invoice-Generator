@@ -1,7 +1,6 @@
 const express = require("express");
 const htmlToPdf = require("../helpers/html-to-pdf.js");
-const pkg = require("number-to-words");
-const { toWords } = pkg;
+const numWords = require('num-words')
 
 const router = express.Router();
 
@@ -9,6 +8,9 @@ router.post("/", async (req, res) => {
   try {
     console.log(`Request body : `, req.body);
     const {
+      invoiceNo,
+      buyerPO,
+      date,
       description,
       color,
       packaging,
@@ -100,17 +102,17 @@ router.post("/", async (req, res) => {
     let [integerPart, decimalPart] = parseFloat(totalAmount)
       .toFixed(2)
       .split(".");
-    let words = toWords(parseInt(integerPart, 10));
+    let words = numWords(parseInt(integerPart, 10));
     if (decimalPart && parseInt(decimalPart, 10) !== 0) {
-      words += " and " + toWords(parseInt(decimalPart, 10)) + " fils";
+      words += " and " + numWords(parseInt(decimalPart, 10)) + " fils";
     }
     const taxAmount = (totalAmount * exchangeRate * 0.18).toFixed(2);
     let [integer2Part, decimal2Part] = parseFloat(taxAmount)
       .toFixed(2)
       .split(".");
-    let taxWords = toWords(parseInt(integer2Part, 10));
+    let taxWords = numWords(parseInt(integer2Part, 10));
     if (decimalPart && parseInt(decimal2Part, 10) !== 0) {
-      taxWords += " and " + toWords(parseInt(decimal2Part, 10)) + " paisa";
+      taxWords += " and " + numWords(parseInt(decimal2Part, 10)) + " paisa";
     }
     const html = `<!DOCTYPE html>
  <html lang="en">
@@ -126,9 +128,8 @@ router.post("/", async (req, res) => {
      />
      <style>
      @page {
-       margin: 0.3cm 0.2cm;
-       size: A4;
-       padding: 10px;
+       size: Letter;
+       padding: 0px 10px;
        }
        
   table, th, td {
@@ -136,7 +137,7 @@ router.post("/", async (req, res) => {
     border-collapse: collapse;
   }
   th, td {
-    padding: 5px;
+    padding: 2px;
   }
      </style>
    </head>
@@ -146,20 +147,19 @@ router.post("/", async (req, res) => {
        padding: 0;
        font-family: Calibri, sans-serif;
        font-size: 9pt;
-       max-width: 210mm;
-       max-height: 297mm;
+       max-width: 400mm;
+       max-height: 500mm;
        box-sizing: border-box;
-       padding: 5mm;
      "
    >
-     <div style="width: 80%; margin: 0;">
+     <div style="width: 95%; height : 100% ;margin: 0 auto; align-items:center">
        <div style="margin: 0; padding: 0">
          <div
            style="
              text-align: center;
              font-weight: bold;
              font-size: 28px;
-             margin-bottom: 5px;
+             margin-bottom: 3px;
            "
          >
            I Trade Bharat
@@ -171,7 +171,7 @@ router.post("/", async (req, res) => {
              text-align: center;
              font-weight: bold;
              font-size: 12px;
-             margin-bottom: 5px;
+             margin-bottom: 3px;
            "
          >
            EXPORT INVOICE (SUPPLY MEANT FOR EXPORT ON PAYMENT OF IGST)
@@ -184,7 +184,7 @@ router.post("/", async (req, res) => {
              width: 50%;
              border: 1px solid black;
              text-align: center;
-             padding: 5px;
+             padding: 3px;
            "
          >
            <h5 style="font-size: 9px">EXPORTER:</h5>
@@ -201,22 +201,22 @@ router.post("/", async (req, res) => {
              width: 25%;
              border: 1px solid black;
              text-align: center;
-             padding: 5px;
+             padding: 3px;
            "
          >
            <h5 style="font-weight: bold; font-size: 9px">Invoice No:-</h5>
-           <h2 style="font-weight: bold; font-size: 14px">ITB/24-25/05</h2>
+           <h2 style="font-weight: bold; font-size: 14px">${invoiceNo}</h2>
          </div>
          <div
            style="
              width: 25%;
              border: 1px solid black;
              text-align: center;
-             padding: 5px;
+             padding: 3px;
            "
          >
            <h5 style="font-weight: bold; font-size: 9px">Date:-</h5>
-           <h3 style="font-weight: bold; font-size: 14px">12-08-2024</h3>
+           <h3 style="font-weight: bold; font-size: 14px">${date}</h3>
          </div>
        </div>
  
@@ -227,7 +227,7 @@ router.post("/", async (req, res) => {
              width: 50%;
              border: 1px solid black;
              text-align: center;
-             padding: 5px;
+             padding: 3px;
            "
          >
            <h3 style="font-size: 8px">BILL TO :-</h3>
@@ -242,22 +242,22 @@ router.post("/", async (req, res) => {
              width: 25%;
              border: 1px solid black;
              text-align: center;
-             padding: 5px;
+             padding: 3px;
            "
          >
            <h5 style="font-weight: bold; font-size: 9px">Buyer's PO Number</h5>
-           <h3 style="font-weight: bold; font-size: 14px">192829</h3>
+           <h3 style="font-weight: bold; font-size: 14px">${buyerPO}</h3>
          </div>
          <div
            style="
              width: 25%;
              border: 1px solid black;
              text-align: center;
-             padding: 5px;
+             padding: 3px;
            "
          >
            <h5 style="font-weight: bold; font-size: 9px">Date:-</h5>
-           <h3 style="font-weight: bold; font-size: 14px">12-08-2024</h3>
+           <h3 style="font-weight: bold; font-size: 14px">${date}</h3>
          </div>
        </div>
  
@@ -268,7 +268,7 @@ router.post("/", async (req, res) => {
              width: 25%;
              border: 1px solid black;
              text-align: center;
-             padding: 5px;
+             padding: 3px;
            "
          >
            <h3 style="font-size: 8px">CONSIGNEE :-</h3>
@@ -283,7 +283,7 @@ router.post("/", async (req, res) => {
              width: 25%;
              border: 1px solid black;
              text-align: center;
-             padding: 5px;
+             padding: 3px;
            "
          >
            <h5 style="font-weight: bold; font-size: 9px">IEC No -AHRPB0669A</h5>
@@ -299,7 +299,7 @@ router.post("/", async (req, res) => {
              width: 25%;
              border: 1px solid black;
              text-align: center;
-             padding: 5px;
+             padding: 3px;
            "
          >
            <h5 style="font-weight: bold; font-size: 9px">Port of Discharge</h5>
@@ -313,7 +313,7 @@ router.post("/", async (req, res) => {
              width: 25%;
              border: 1px solid black;
              text-align: center;
-             padding: 5px;
+             padding: 3px;
            "
          >
            <h5 style="font-weight: bold; font-size: 9px">Final Destination</h5>
@@ -328,7 +328,7 @@ router.post("/", async (req, res) => {
              width: 25%;
              border: 1px solid black;
              text-align: center;
-             padding: 5px;
+             padding: 3px;
            "
          >
            <h3 style="font-size: 8px">Pre-Carriage by Tempo</h3>
@@ -338,7 +338,7 @@ router.post("/", async (req, res) => {
              width: 30%;
              border: 1px solid black;
              text-align: center;
-             padding: 5px;
+             padding: 3px;
            "
          >
            <h5 style="font-weight: bold; font-size: 9px">
@@ -350,7 +350,7 @@ router.post("/", async (req, res) => {
              width: 45%;
              border: 1px solid black;
              text-align: center;
-             padding: 5px;
+             padding: 3px;
            "
          >
            <h5 style="font-weight: bold; font-size: 9px">
@@ -545,12 +545,13 @@ router.post("/", async (req, res) => {
               <td colspan="7" style = "border:1px solid black; text-align:centre">
                 We declare that this invoice shows the actual price of the goods described  and that all particulars are true and correct
               </td>
-            <td colspan="7" style="border: 1px solid black; text-align: center; height: 80x;">
-  <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 10px;">
-    <span style="align-self: flex-start;">iTrade Bharat</span>
-    <span style="align-self: flex-end;">Authorised Signatory</span>
+          <td colspan="7" style="border: 1px solid black; text-align: center; height: 80px;">
+  <div style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; height: 100%;">
+    <span style="align-self: center; text-align: center; white-space: nowrap;">iTrade Bharat</span>
+    <span style="align-self: center; text-align: center; white-space: nowrap;">Authorised Signatory</span>
   </div>
 </td>
+
               </tr>
            </tbody>
          </table>
@@ -570,3 +571,4 @@ router.post("/", async (req, res) => {
 });
 
 module.exports = router;
+
