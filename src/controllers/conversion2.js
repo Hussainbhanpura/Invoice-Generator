@@ -485,7 +485,7 @@ router.post("/", async (req, res) => {
               <td colspan="4" style="text-align: right; border: 1px solid black;">
                 EXCHANGE RATE 1 AED =
               </td>
-              <td colspan="8" style="text-align: left; border: 1px solid black;">
+              <td colspan="8" style="text-align: left; border: 1px solid black; margin-left : 2px">
                 ${exchangeRate}
               </td>
             </tr>
