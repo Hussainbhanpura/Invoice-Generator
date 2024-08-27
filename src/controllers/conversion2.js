@@ -115,7 +115,7 @@ router.post("/", async (req, res) => {
       words += " and " + numWords(parseInt(decimalPart, 10)) + " fils";
       }
       else{
-        words += " and " + numWords(parseInt(decimalPart, 10)) + " cents";
+        words += " point " + numWords(parseInt(decimalPart, 10)) + " cents";
       }
     }
     const taxAmount = (totalAmount * exchangeRate * 0.18).toFixed(2);
@@ -124,7 +124,7 @@ router.post("/", async (req, res) => {
       .split(".");
     let taxWords = numWords(parseInt(integer2Part, 10));
     if (decimalPart && parseInt(decimal2Part, 10) !== 0) {
-      taxWords += " and " + numWords(parseInt(decimal2Part, 10)) + " paisa";
+      taxWords += " point " + numWords(parseInt(decimal2Part, 10)) + " paisa";
     }
     const html = `<!DOCTYPE html>
  <html lang="en">
