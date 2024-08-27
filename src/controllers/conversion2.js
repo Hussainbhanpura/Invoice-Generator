@@ -111,7 +111,12 @@ router.post("/", async (req, res) => {
       .split(".");
     let words = numWords(parseInt(integerPart, 10));
     if (decimalPart && parseInt(decimalPart, 10) !== 0) {
+      if(sym === "AED"){
       words += " and " + numWords(parseInt(decimalPart, 10)) + " fils";
+      }
+      else{
+        words += " and " + numWords(parseInt(decimalPart, 10)) + " cents";
+      }
     }
     const taxAmount = (totalAmount * exchangeRate * 0.18).toFixed(2);
     let [integer2Part, decimal2Part] = parseFloat(taxAmount)
