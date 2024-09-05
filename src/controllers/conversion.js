@@ -250,7 +250,7 @@ router.post("/", async (req, res) => {
         </div>
         <div class="col-6 bordered" style="border-top: 0px"></div>
       </div>
-      <table class="table table-bordered" style="margin: 0 -12px; border: 1px solid #000;">
+      <table class="table table-bordered" style="margin: 0; border: 1px solid #000;">
         <thead>
           <tr>
             <th style="white-space: nowrap">Sr.No</th>
