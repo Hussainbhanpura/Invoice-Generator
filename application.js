@@ -1,9 +1,10 @@
 const express = require("express");
 const conversionController = require("./src/controllers/conversion2.js");
+const poConversionController = require("./src/controllers/conversion.js");
 const path = require("path");
 const cors = require("cors");
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 
 class Application {
   static async main() {
@@ -17,7 +18,13 @@ class Application {
       res.sendFile(filePath);
     });
 
+    app.get("/po", (req, res) => {
+      const filePath = path.join(__dirname, "./invoice/po.html");
+      res.sendFile(filePath);
+    });
+
     app.use("/conversion", conversionController);
+    app.use("/poconversion", poConversionController);
 
     app.listen(PORT, () => {
       console.log(`Application listening on port ${PORT}`);

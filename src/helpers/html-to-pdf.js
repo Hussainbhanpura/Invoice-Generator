@@ -2,7 +2,7 @@ const puppeteer = require("puppeteer");
 
 // Default options for PDF generation
 const defaultOptions = {
-  format: "A4",
+  format: "Letter",
   printBackground: true,
 };
 
