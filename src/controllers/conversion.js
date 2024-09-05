@@ -250,7 +250,7 @@ router.post("/", async (req, res) => {
         </div>
         <div class="col-6 bordered" style="border-top: 0px"></div>
       </div>
-      <table class="table table-bordered" style="margin: 0; border: 1px solid #000;">
+      <table class="table table-bordered" style="margin: 0 -12px; border: 1px solid #000;">
         <thead>
           <tr>
             <th style="white-space: nowrap">Sr.No</th>
@@ -267,11 +267,11 @@ router.post("/", async (req, res) => {
         </tbody>
         <tfoot>
           <tr>
-            <th colspan="2" style="text-align: right">Total:</th>
-            <th colspan="2" class="text-end">${totalQuantity} pcs</th>
+            <td colspan="2" style="text-align: right">Total:</td>
+            <td colspan="2" class="text-end">${totalQuantity} pcs</td>
             <th></th>
             <th></th>
-            <th>${totalAmount}</th>
+            <td>${totalAmount}</td>
           </tr>
         </tfoot>
       </table>
