@@ -82,7 +82,7 @@ router.post("/", async (req, res) => {
           </tr>
           <tr>
             <td style="padding: 0; text-align: center">
-              <span style="font-size: 10px"> Blue 100 pcs <br /></span>
+              <span style="font-size: 10px">${description[i]} <br /></span>
               <span style="font-size: 10px"> MASTER CARTOON </span>
             </td>
           </tr>
