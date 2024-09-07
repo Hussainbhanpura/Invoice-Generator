@@ -62,6 +62,7 @@
                     class="form-control form-control-sm"
                     id="date"
                     required
+                    value=""
                   />
                 </td>
               </tr>
@@ -308,6 +309,12 @@
             alert("An error occurred while generating the PDF.");
           }
         });
+
+      // Add this JavaScript code to set the default date to today
+      document.addEventListener("DOMContentLoaded", function () {
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("date").value = today;
+      });
     </script>
   </body>
 </html>

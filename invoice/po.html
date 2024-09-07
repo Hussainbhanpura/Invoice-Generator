@@ -51,6 +51,7 @@
                     class="form-control form-control-sm"
                     id="date"
                     required
+                    value=""
                   />
                 </td>
               </tr>
@@ -108,6 +109,10 @@
     ></script>
 
     <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("date").value = today;
+      });
       function addRow() {
         const table = document
           .getElementById("itemsTable")
