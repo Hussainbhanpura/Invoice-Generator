@@ -45,7 +45,7 @@
                       required
                     >
                       <% for (let i = 0; i < logistic.length; i++) { %>
-                      <option value="<%= logistic[i].name %>">
+                      <option value="<%= logistic[i]._id %>">
                         <%= logistic[i].name %>
                       </option>
                       <% } %>
@@ -72,7 +72,7 @@
                       required
                     >
                       <% for (let i = 0; i < distributor.length; i++) { %>
-                      <option value="<%= distributor[i].name %>">
+                      <option value="<%= distributor[i]._id %>">
                         <%= distributor[i].name %>
                       </option>
                       <% } %>
@@ -315,7 +315,33 @@
             if (!data[key]) data[key] = [];
             data[key].push(value);
           });
+          const logisticValue = document.getElementById("logistic").value;
+          const distributorValue = document.getElementById("distributor").value;
 
+          // Fetch logistic data
+          const logisticResponse = await fetch(
+            `http://localhost:3000/api/logistic/${logisticValue}`
+          );
+          if (!logisticResponse.ok) {
+            throw new Error(
+              `Error fetching logistic data: ${logisticResponse.statusText}`
+            );
+          }
+          const logisticData = await logisticResponse.json(); // Parse the response to JSON
+
+          // Fetch distributor data
+          const distributorResponse = await fetch(
+            `http://localhost:3000/api/distributor/${distributorValue}`
+          );
+          if (!distributorResponse.ok) {
+            throw new Error(
+              `Error fetching distributor data: ${distributorResponse.statusText}`
+            );
+          }
+          const distributorData = await distributorResponse.json(); // Parse the response to JSON
+
+          data.distributor = distributorData;
+          data.logistic = logisticData;
           const invoiceNo = document.getElementById("invoiceNo").value;
           if (invoiceNo) {
             data.invoiceNo = invoiceNo;

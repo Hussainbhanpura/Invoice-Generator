@@ -16,8 +16,10 @@ router.post("/", async (req, res) => {
       quantity,
       rate,
       amount,
+      distributor,
+      logistic
     } = req.body;
-    if (!description || !quantity || !rate) {
+    if (!description || !quantity || !rate || !amount || !distributor || !logistic) {
       res.status(400).send("Required fields are missing");
       return;
     }
@@ -212,12 +214,11 @@ router.post("/", async (req, res) => {
       <div class="row main-row">
         <div class="col-6 bordered">
           <h5>Consignee (Ship To)</h5>
-          <h4>SHREE KRISHNA CARGO</h4>
+          <h4>${logistic.name}</h4>
           <p>
-            M7 SHREE GHANTAKARNA MAHAVIR MARKET NEAR NEW CLOTH MARKET, SARANGPUR
-            AHMEDABAD <br />
-            GSTIN/UIN : 24AAPFS1919P1ZK <br />
-            State Name : Gujarat, Code : 24
+            ${logistic.address} <br />
+            GSTIN/UIN : ${logistic.gstin} <br />
+            State Name : ${logistic.stateName}, Code : ${logistic.code}
           </p>
         </div>
         <div class="col-6">
@@ -240,12 +241,11 @@ router.post("/", async (req, res) => {
         </div>
         <div class="col-6 bordered">
           <h5>Supplier (Bill from)</h5>
-          <h4>AARHASI GLOBAL LLP</h4>
+          <h4>${distributor.name}</h4>
           <p>
-            Mokaji Circle, 5th Floor, Office No. 508, Shashwat Space, <br />
-            Nana Mava Road,Nana Mauva, Rajkot, Rajkot <br />
-            GSTIN/UIN: 24ADZFS5592D1ZG <br />
-            State Name : Gujarat, Code : 24
+            ${distributor.address} <br/>
+            GSTIN/UIN: ${distributor.gstin} <br />
+            State Name : ${distributor.stateName}, Code : ${distributor.code}
           </p>
         </div>
         <div class="col-6 bordered" style="border-top: 0px"></div>

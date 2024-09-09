@@ -24,6 +24,15 @@ router.get('/distributors', async (req, res) => {
     }
 });
 
+router.get('/distributor/:id', async (req, res) =>{
+    try {
+        const distributors = await distributor.findById(req.params.id);
+        res.json(distributors);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+})
+
 // Create a new logistics
 router.post('/logistics', async (req, res) => {
     try {
@@ -39,6 +48,15 @@ router.post('/logistics', async (req, res) => {
 router.get('/logistics', async (req, res) => {
     try {
         const logistics = await logistic.find();
+        res.json(logistics);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+router.get('/logistic/:id', async (req, res) => {
+    try {
+        const logistics = await logistic.findById(req.params.id);
         res.json(logistics);
     } catch (err) {
         res.status(500).json({ message: err.message });
