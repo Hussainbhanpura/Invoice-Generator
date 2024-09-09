@@ -44,8 +44,8 @@ class Application {
 
     app.get("/po", async (req, res) => {
       try {
-        const distributorsResponse = await axios.get('http://localhost:3000/api/distributors');
-        const logisticsResponse = await axios.get('http://localhost:3000/api/logistics');
+        const distributorsResponse = await axios.get('https://invoice-generator-opq6.onrender.com/api/distributors');
+        const logisticsResponse = await axios.get('https://invoice-generator-opq6.onrender.com/api/logistics');
 
         const distributors = distributorsResponse.data;
         const logistics = logisticsResponse.data;
